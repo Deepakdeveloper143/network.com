@@ -1,0 +1,66 @@
+==============================================
+QuantumShieldAI - Simple Installation Guide
+==============================================
+
+If you're getting permission errors or installation issues, follow this guide!
+
+---
+
+STEP 1: CREATE A CLEAN VIRTUAL ENVIRONMENT (Optional but Recommended)
+
+Open Command Prompt or PowerShell and run:
+
+cd "C:\Users\P Deepak\Desktop\agentofqsafe"
+
+# Create a new virtual env
+python -m venv new_venv
+
+# Activate it:
+# PowerShell:
+.\new_venv\Scripts\Activate.ps1
+# Command Prompt:
+new_venv\Scripts\activate.bat
+
+---
+
+STEP 2: INSTALL BACKEND (in new terminal)
+
+1. Make sure your virtual environment is activated (you should see (new_venv) at the prompt)
+2. Run these commands:
+   cd backend
+   pip install --upgrade pip
+   pip install fastapi uvicorn python-multipart python-dotenv groq requests pillow cryptography
+
+---
+
+STEP 3: INSTALL FRONTEND (in another terminal)
+
+1. Open a NEW terminal window
+2. Activate the same virtual environment:
+   cd "C:\Users\P Deepak\Desktop\agentofqsafe"
+   .\new_venv\Scripts\Activate.ps1 (PowerShell)
+3. Run:
+   cd frontend
+   pip install streamlit requests plotly pillow
+
+---
+
+STEP 4: RUN THE APP!
+
+Terminal 1 (Backend):
+cd "C:\Users\P Deepak\Desktop\agentofqsafe\backend"
+python -m app.main
+
+Terminal 2 (Frontend):
+cd "C:\Users\P Deepak\Desktop\agentofqsafe\frontend\app"
+streamlit run main.py
+
+---
+
+Then open:
+- Frontend: http://localhost:8501
+- Backend: http://localhost:8000
+
+---
+
+NOTE: You don't need Supabase or CrewAI for the app to work - it will fall back to sample data!
