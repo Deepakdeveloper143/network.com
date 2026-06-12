@@ -251,7 +251,7 @@ if page == "🏠 Landing Page":
         with open(landing_page_path, "r", encoding="utf-8") as f:
             landing_html = f.read()
         # Display the beautiful homepage!
-        st.components.v1.html(landing_html, height=5000, scrolling=True)
+        st.html(landing_html)
     else:
         st.error("Homepage not found!")
 
