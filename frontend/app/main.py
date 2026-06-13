@@ -236,6 +236,29 @@ st.session_state.current_page = st.sidebar.selectbox(
 )
 page = st.session_state.current_page
 
+# Initialize Groq API key in session state
+if 'groq_api_key' not in st.session_state:
+    st.session_state.groq_api_key = os.getenv("GROQ_API_KEY", "")
+
+st.sidebar.markdown('<div style="border-top: 1px solid var(--border); margin: 1rem 0;"></div>', unsafe_allow_html=True)
+st.sidebar.markdown("### 🤖 AI Configuration")
+
+groq_key_input = st.sidebar.text_input(
+    "Groq API Key",
+    value=st.session_state.groq_api_key,
+    type="password",
+    help="Enter your Groq API key for AI features. Get one at https://console.groq.com/keys"
+)
+
+# Update session state if user changes the key
+if groq_key_input != st.session_state.groq_api_key:
+    st.session_state.groq_api_key = groq_key_input
+
+if st.session_state.groq_api_key:
+    st.sidebar.success("✅ API Key configured")
+else:
+    st.sidebar.warning("⚠️ No API Key - Using fallback mode")
+
 st.sidebar.markdown('<div style="border-top: 1px solid var(--border); margin: 1rem 0;"></div>', unsafe_allow_html=True)
 st.sidebar.markdown('<p style="color: var(--text3); font-size: 0.75rem; text-align: center; font-family: \'Share Tech Mono\', monospace;">Version 1.0.0</p>', unsafe_allow_html=True)
 
@@ -666,7 +689,12 @@ elif page == "🤖 AI Security Copilot":
             message_placeholder = st.empty()
             try:
                 messages_payload = [{"role": m["role"], "content": m["content"]} for m in st.session_state.messages]
-                response = requests.post(f"{API_BASE}/chatbot", json={"messages": messages_payload})
+                # Pass the Groq API key from session state (set in sidebar)
+                payload = {
+                    "messages": messages_payload,
+                    "groq_api_key": st.session_state.groq_api_key
+                }
+                response = requests.post(f"{API_BASE}/chatbot", json=payload)
                 if response.status_code == 200:
                     data = response.json()
                     message_placeholder.markdown(data["response"])
