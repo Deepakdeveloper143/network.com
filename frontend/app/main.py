@@ -10,7 +10,14 @@ import os
 from dotenv import load_dotenv
 
 # Load environment variables
-load_dotenv()
+# Look for .env file in the project root (3 levels up: app/ → frontend/ → agentofqsafe/)
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+dotenv_path = os.path.join(project_root, ".env")
+if not os.path.exists(dotenv_path):
+    # Try in frontend folder as fallback
+    frontend_folder = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    dotenv_path = os.path.join(frontend_folder, ".env")
+load_dotenv(dotenv_path)
 
 # Set page config
 st.set_page_config(
@@ -213,8 +220,8 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# API base URL - use environment variable if available
-API_BASE = os.getenv("API_BASE_URL", "http://localhost:8000/api")
+# API base URL - use Render backend
+API_BASE = "https://quantumshieldai.onrender.com/api"
 
 # Sidebar navigation - matches landing page styling
 st.sidebar.markdown('<div style="padding: 1rem 0; text-align: center;">', unsafe_allow_html=True)
